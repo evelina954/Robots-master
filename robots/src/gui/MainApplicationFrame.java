@@ -164,7 +164,7 @@ public class MainApplicationFrame extends JFrame
             addLogMessageItem.addActionListener((event) -> Logger.debug("Новая строка"));
             testMenu.add(addLogMessageItem);
         }
-        
+
         testMenu.add(exitItem);
         menuBar.add(lookAndFeelMenu);
         menuBar.add(testMenu);

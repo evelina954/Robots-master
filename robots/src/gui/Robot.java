@@ -29,15 +29,6 @@ public class Robot extends JPanel
     public volatile int targetPositionY;
 
     /**
-     * Переменная обзначающая ширину игрового поля
-     */
-    public volatile double currentWidth;
-    /**
-     * Переменная обзначающая высоту игрового поля
-     */
-    public volatile double currentHeight;
-
-    /**
      * переменная максимальной скорости жука
      */
     private static final double maxVelocity = 0.1;
