@@ -7,12 +7,6 @@ import javax.swing.UIManager;
 
 public class RobotsProgram
 {
-  /**
-   * Главный метод, который вызывается призапуске
-   * Создание инструмента графики, запуск класса MainApplication, который вызывает методы отрисовки
-   * синхронное выполнение событий <b>SwingUtilities.invokeLater</b>
-   * @see MainApplicationFrame
-   */
     public static void main(String[] args) {
       try {
         UIManager.setLookAndFeel("javax.swing.plaf.nimbus.NimbusLookAndFeel");

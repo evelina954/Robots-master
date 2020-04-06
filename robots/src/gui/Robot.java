@@ -6,40 +6,14 @@ import java.awt.Point;
 
 public class Robot extends JPanel
 {
-    /**
-     * переменная показывающая позицию жука по координате Х
-     */
     public volatile double robotPositionX;
-    /**
-     * переменная показывающая позицию жука по координате У
-     */
     public volatile double robotPositionY;
-    /**
-     * переменная показывающая напавление жука
-     */
     public volatile double robotDirection;
-
-    /**
-     * переменная показывающая позицию еды по координате Х
-     */
     public volatile int targetPositionX;
-    /**
-     * переменная показывающая позицию еды по координате У
-     */
     public volatile int targetPositionY;
-
-    /**
-     * переменная максимальной скорости жука
-     */
     private static final double maxVelocity = 0.1;
-    /**
-     * переменная максимальной скорости жука
-     */
-    private static final double maxAngularVelocity = 0.001;
+    private static final double maxAngularVelocity = 0.003;
 
-    /**
-     * Метод задающий начальную позицию игры, то есть где находится еда и жук, и напрвавление жука
-     */
     protected void setStartPosition() {
 
         robotPositionX = 100;
@@ -49,10 +23,6 @@ public class Robot extends JPanel
         targetPositionY = 100;
     }
 
-    /**
-     * Метод меняющий положение еды
-     * @param p приходящая точка, когда мы нажали на кнопку мыши
-     */
     protected void setTargetPosition(Point p)
     {
         targetPositionX = p.x;
@@ -77,14 +47,6 @@ public class Robot extends JPanel
         return robotDirection;
     }
 
-    /**
-     * Метод вычисляющий направление жука, через тангенс угла между жуком и едой
-     * @param fromX позиция жука
-     * @param fromY позиция жука
-     * @param toX позиция еды
-     * @param toY позиция жука
-     * @return возращает угол в радианах
-     */
     private static double angleTo(double fromX, double fromY, double toX, double toY)
     {
         double diffX = toX - fromX;
@@ -92,9 +54,6 @@ public class Robot extends JPanel
         return asNormalizedRadians(Math.atan2(diffY, diffX));
     }
 
-    /**
-     * Метод обновления событий, движения объектов
-     */
     protected void onModelUpdateEvent()
     {
         double distance = distance(targetPositionX, targetPositionY,
@@ -135,12 +94,6 @@ public class Robot extends JPanel
 //        moveRobot(velocity, angularVelocity, 10);
     }
 
-    /**
-     * Метод изменяющий координаты жука, вызывается в {@link Robot#onModelUpdateEvent()}
-     * @param velocity скорость жука
-     * @param angularVelocity угловая скорость жука
-     * @param duration направление жука
-     */
     private void moveRobot(double velocity, double angularVelocity, double duration)
     {
         double newX = robotPositionX + velocity * duration * Math.cos(robotDirection);
@@ -151,11 +104,6 @@ public class Robot extends JPanel
         robotDirection = newDirection;
     }
 
-    /**
-     * Статический метод преобразования угла в радианы от 0 до 2P
-     * @param angle угол между жуком и едой {@link Robot#angleTo(double, double, double, double)}
-     * @return нормализованный угол между жуком и едой
-     */
     private static double asNormalizedRadians(double angle)
     {
         while (angle < 0) {
@@ -167,14 +115,6 @@ public class Robot extends JPanel
         return angle;
     }
 
-    /**
-     * Метод вычисляющий расстояние от жука до еды
-     * @param x1 координата жука
-     * @param y1 координата жука
-     * @param x2 координата еды
-     * @param y2 координата еды
-     * @return расстояние от жука до еды
-     */
     private static double distance(double x1, double y1, double x2, double y2)
     {
         double diffX = x1 - x2;
