@@ -11,12 +11,12 @@ import java.awt.event.WindowEvent;
 public class MenuBar extends JMenuBar {
     private MainApplicationFrame mainFrame;
 
-    public MenuBar(MainApplicationFrame frame){
+    public MenuBar(MainApplicationFrame frame) {
         mainFrame = frame;
         generateMenuBar();
     }
 
-    private void setUpMenuItemNewLogWindow(JMenu menu){
+    private void setUpMenuItemNewLogWindow(JMenu menu) {
         JMenuItem menuItem = new JMenuItem("Новое окно лога");
         menuItem.setMnemonic(KeyEvent.VK_N);
         menuItem.setAccelerator(KeyStroke.getKeyStroke(
@@ -28,7 +28,8 @@ public class MenuBar extends JMenuBar {
         });
         menu.add(menuItem);
     }
-    private void setUpMenuItemNewGameWindow(JMenu menu){
+
+    private void setUpMenuItemNewGameWindow(JMenu menu) {
         JMenuItem menuItem = new JMenuItem("Новое окно игры");
         menuItem.setMnemonic(KeyEvent.VK_O);
         menuItem.setAccelerator(KeyStroke.getKeyStroke(
@@ -40,6 +41,7 @@ public class MenuBar extends JMenuBar {
         });
         menu.add(menuItem);
     }
+
     private void addToMenu(JMenu menu, String txt) {
         JMenuItem currentItem = new JMenuItem(txt, KeyEvent.VK_S);
         currentItem.addActionListener((event) -> {
@@ -56,7 +58,7 @@ public class MenuBar extends JMenuBar {
         return tab;
     }
 
-    private void setUpMenuItemExit(JMenu menu){
+    private void setUpMenuItemExit(JMenu menu) {
         JMenuItem menuItem = new JMenuItem("Выйти");
         menuItem.setMnemonic(KeyEvent.VK_Q);
         menuItem.setAccelerator(KeyStroke.getKeyStroke(
@@ -67,7 +69,8 @@ public class MenuBar extends JMenuBar {
         });
         menu.add(menuItem);
     }
-    private void exitEvent(){
+
+    private void exitEvent() {
         Toolkit.getDefaultToolkit().getSystemEventQueue().postEvent(
                 new WindowEvent(mainFrame, WindowEvent.WINDOW_CLOSING));
     }
@@ -97,8 +100,7 @@ public class MenuBar extends JMenuBar {
         this.add(testMenu);
     }
 
-    private void setLookAndFeel(String className)
-    {
+    private void setLookAndFeel(String className) {
         try {
             UIManager.setLookAndFeel(className);
             SwingUtilities.updateComponentTreeUI(this);

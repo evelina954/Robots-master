@@ -4,8 +4,7 @@ import javax.swing.*;
 import java.awt.Point;
 
 
-public class Robot extends JPanel
-{
+public class Robot extends JPanel {
     public volatile double robotPositionX;
     public volatile double robotPositionY;
     public volatile double robotDirection;
@@ -23,8 +22,7 @@ public class Robot extends JPanel
         targetPositionY = 100;
     }
 
-    protected void setTargetPosition(Point p)
-    {
+    protected void setTargetPosition(Point p) {
         targetPositionX = p.x;
         targetPositionY = p.y;
     }
@@ -32,34 +30,33 @@ public class Robot extends JPanel
     public int getTargetPositionX() {
         return targetPositionX;
     }
+
     public int getTargetPositionY() {
         return targetPositionY;
     }
 
-    public double getRobotPositionX(){
+    public double getRobotPositionX() {
         return robotPositionX;
     }
-    public double getRobotPositionY(){
+
+    public double getRobotPositionY() {
         return robotPositionY;
     }
 
-    public double getRobotDirection(){
+    public double getRobotDirection() {
         return robotDirection;
     }
 
-    private static double angleTo(double fromX, double fromY, double toX, double toY)
-    {
+    private static double angleTo(double fromX, double fromY, double toX, double toY) {
         double diffX = toX - fromX;
         double diffY = toY - fromY;
         return asNormalizedRadians(Math.atan2(diffY, diffX));
     }
 
-    protected void onModelUpdateEvent()
-    {
+    protected void onModelUpdateEvent() {
         double distance = distance(targetPositionX, targetPositionY,
                 robotPositionX, robotPositionY);
-        if (distance < 0.5)
-        {
+        if (distance < 0.5) {
             return;
         }
         double velocity = maxVelocity;
@@ -82,41 +79,47 @@ public class Robot extends JPanel
                 moveRobot(velocity / 2, angularVelocity, 10);
             }
         }
-//        if (angleToTarget > robotDirection)
-//        {
-//            angularVelocity = maxAngularVelocity;
-//        }
-//        if (angleToTarget < robotDirection)
-//        {
-//            angularVelocity = -maxAngularVelocity;
-//        }
-//
-//        moveRobot(velocity, angularVelocity, 10);
     }
 
-    private void moveRobot(double velocity, double angularVelocity, double duration)
-    {
-        double newX = robotPositionX + velocity * duration * Math.cos(robotDirection);
-        double newY = robotPositionY + velocity * duration * Math.sin(robotDirection);
+    private static double applyLimits(double value, double min, double max) {
+        if (value < min)
+            return min;
+        return Math.min(value, max);
+    }
+
+    private void moveRobot(double velocity, double angularVelocity, double duration) {
+        velocity = applyLimits(velocity, 0, maxVelocity);
+        angularVelocity = applyLimits(angularVelocity, -maxAngularVelocity, maxAngularVelocity);
+        double newDirection = asNormalizedRadians(robotDirection + angularVelocity * duration);
+
+        double newX = robotPositionX + velocity / angularVelocity *
+                (Math.sin(robotDirection + angularVelocity * duration) -
+                        Math.sin(robotDirection));
+        if (!Double.isFinite(newX)) {
+            newX = robotPositionX + velocity * duration * Math.cos(robotDirection);
+        }
+        double newY = robotPositionY - velocity / angularVelocity *
+                (Math.cos(robotDirection + angularVelocity * duration) -
+                        Math.cos(robotDirection));
+        if (!Double.isFinite(newY)) {
+            newY = robotPositionY + velocity * duration * Math.sin(robotDirection);
+        }
         robotPositionX = newX;
         robotPositionY = newY;
-        double newDirection = asNormalizedRadians(robotDirection + angularVelocity * duration);
         robotDirection = newDirection;
     }
 
-    private static double asNormalizedRadians(double angle)
-    {
+    private static double asNormalizedRadians(double angle) {
         while (angle < 0) {
-            angle += 2*Math.PI;
+            angle += 2 * Math.PI;
         }
-        while (angle >= 2*Math.PI) {
-            angle -= 2*Math.PI;
+        while (angle >= 2 * Math.PI) {
+            angle -= 2 * Math.PI;
         }
         return angle;
     }
 
-    private static double distance(double x1, double y1, double x2, double y2)
-    {
+    private static double distance(double x1, double y1, double x2, double y2) {
         double diffX = x1 - x2;
         double diffY = y1 - y2;
         return Math.sqrt(diffX * diffX + diffY * diffY);
